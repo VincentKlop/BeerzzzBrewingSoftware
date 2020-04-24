@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Ingredient Type Field{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block page_content %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ingredient_type_field.id }}</td>
+            </tr>
+            <tr>
+                <th>Ingredient Types</th>
+                <td>{{ ingredient_type_field.ingredientType|join(', ') }}</td>
+            </tr>
+            <tr>
+                <th>Unit of Measurement</th>
+                <td>{{ ingredient_type_field.unitOfMeasure }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('ingredient_type_field_index') }}"><i class="fas fa-list"></i></a>
+
+    <a href="{{ path('ingredient_type_field_edit', {'id': ingredient_type_field.id}) }}"><i class="fas fa-edit"></i></a>
+
+    {{ include('ingredient_type_field/_delete_form.html.twig') }}
+{% endblock %}

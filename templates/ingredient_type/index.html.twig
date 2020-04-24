@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Ingredient Type{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block page_content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Extra Fields</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ingredient_type in ingredient_types %}
+            <tr>
+                <td>{{ ingredient_type.id }}</td>
+                <td>{{ ingredient_type.name }}</td>
+                <td>{{ ingredient_type.extraFields|join(', ') }}</td>
+                <td>
+                    <a href="{{ path('ingredient_type_show', {'id': ingredient_type.id}) }}"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('ingredient_type_edit', {'id': ingredient_type.id}) }}"><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ingredient_type_new') }}"><i class="fas fa-plus"></i>&nbsp;Create new</a>
+{% endblock %}

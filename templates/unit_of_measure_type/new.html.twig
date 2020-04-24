@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}New Unit Of Measurement Type{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block page_content %}
+    {{ include('unit_of_measure_type/_form.html.twig') }}
+
+    <a href="{{ path('unit_of_measure_type_index') }}"><i class="fas fa-list"></i></a>
+{% endblock %}

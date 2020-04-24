@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}New Ingredient Type{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block page_content %}
+    {{ include('ingredient_type/_form.html.twig') }}
+
+    <a href="{{ path('ingredient_type_index') }}"><i class="fas fa-list"></i></a>
+{% endblock %}

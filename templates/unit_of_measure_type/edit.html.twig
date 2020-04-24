@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Edit Unit Of Measure Type{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block page_content %}
+    {{ include('unit_of_measure_type/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('unit_of_measure_type_index') }}"><i class="fas fa-list"></i></a>
+
+    {{ include('unit_of_measure_type/_delete_form.html.twig') }}
+{% endblock %}
