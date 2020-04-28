@@ -1,7 +1,27 @@
 {% extends '@AdminLTE/layout/default-layout.html.twig' %}
 {% block logo_path %}{% endblock %}
 {% block logo_mini %}{% endblock %}
-{% block logo_large %}{% endblock %}
+{% block logo_large %}<b>Beer</b>zzz{% endblock %}
+{% block sidebar_search %}{% endblock %}
+
+{% block page_content %}
+<div class="box">
+    <div class="box-header with-border">
+        <div class="box-tools pull-right">
+            <div class="btn-group float-right" role="group">
+            {% block topRight %}
+
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body">
+        {% block body %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}
 
 {% block footer %}
 <footer class="main-footer">

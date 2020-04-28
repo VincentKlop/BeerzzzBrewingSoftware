@@ -25,7 +25,12 @@ class UnitOfMeasure
      * @ORM\ManyToOne(targetEntity="App\Entity\UnitOfMeasureType")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $UnitOfMeasureType;
+    private $unitOfMeasureType;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $factor;
 
     public function __toString(): ?string
     {
@@ -51,12 +56,24 @@ class UnitOfMeasure
 
     public function getUnitOfMeasureType(): ?UnitOfMeasureType
     {
-        return $this->UnitOfMeasureType;
+        return $this->unitOfMeasureType;
     }
 
-    public function setUnitOfMeasureType(?UnitOfMeasureType $UnitOfMeasureType): self
+    public function setUnitOfMeasureType(?UnitOfMeasureType $unitOfMeasureType): self
     {
-        $this->UnitOfMeasureType = $UnitOfMeasureType;
+        $this->unitOfMeasureType = $unitOfMeasureType;
+
+        return $this;
+    }
+
+    public function getFactor(): ?float
+    {
+        return $this->factor;
+    }
+
+    public function setFactor(float $factor): self
+    {
+        $this->factor = $factor;
 
         return $this;
     }

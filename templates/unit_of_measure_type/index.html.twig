@@ -3,7 +3,11 @@
 {% block page_title %}Unit Of Measurement Type{% endblock %}
 {% block page_subtitle %}configuration{% endblock %}
 
-{% block page_content %}
+{% block topRight %}
+    <a href="{{ path('unit_of_measure_type_new') }}" class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp;Create new</a>
+{% endblock %}
+
+{% block body %}
     <table class="table">
         <thead>
             <tr>
@@ -16,8 +20,8 @@
             <tr>
                 <td>{{ unit_of_measure_type.name }}</td>
                 <td>
-                    <a href="{{ path('unit_of_measure_type_show', {'id': unit_of_measure_type.id}) }}"><i class="fas fa-eye"></i></a>
-                    <a href="{{ path('unit_of_measure_type_edit', {'id': unit_of_measure_type.id}) }}"><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('unit_of_measure_type_show', {'id': unit_of_measure_type.id}) }}" class="btn btn-default"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('unit_of_measure_type_edit', {'id': unit_of_measure_type.id}) }}" class="btn btn-default"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -27,6 +31,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('unit_of_measure_type_new') }}"><i class="fas fa-plus"></i>&nbsp;Create new</a>
 {% endblock %}

@@ -3,8 +3,10 @@
 {% block page_title %}New Unit Of Measurement{% endblock %}
 {% block page_subtitle %}configuration{% endblock %}
 
-{% block page_content %}
-    {{ include('unit_of_measure/_form.html.twig') }}
+{% block topRight %}
+    <a href="{{ path('unit_of_measure_index') }}" class="btn btn-default"><i class="fas fa-list"></i></a>
+{% endblock %}
 
-    <a href="{{ path('unit_of_measure_index') }}"><i class="fas fa-list"></i></a>
+{% block body %}
+    {{ include('unit_of_measure/_form.html.twig') }}
 {% endblock %}

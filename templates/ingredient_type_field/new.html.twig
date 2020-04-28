@@ -3,8 +3,10 @@
 {% block page_title %}New Ingredient Type Field{% endblock %}
 {% block page_subtitle %}configuration{% endblock %}
 
-{% block page_content %}
-    {{ include('ingredient_type_field/_form.html.twig') }}
+{% block topRight %}
+    <a href="{{ path('ingredient_type_field_index') }}" class="btn btn-primary"><i class="fas fa-list"></i></a>
+{% endblock %}
 
-    <a href="{{ path('ingredient_type_field_index') }}"><i class="fas fa-list"></i></a>
+{% block body %}
+    {{ include('ingredient_type_field/_form.html.twig') }}
 {% endblock %}

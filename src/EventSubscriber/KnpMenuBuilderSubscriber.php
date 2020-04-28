@@ -24,6 +24,7 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
         ])->setAttribute('class', 'header');
 
         $menu->addChild('inventory', [
+            'route' => 'inventory_item_index',
             'label' => 'Inventory',
             'childOptions' => $event->getChildOptions(),
         ])->setLabelAttribute('icon', 'fas fa-warehouse');
@@ -42,6 +43,11 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             'label' => 'Brews',
             'childOptions' => $event->getChildOptions(),
         ])->setLabelAttribute('icon', 'fas fa-beer');
+
+        $menu->addChild('MainConfigurationItem', [
+            'label' => 'ADMIN',
+            'childOptions' => $event->getChildOptions()
+        ])->setAttribute('class', 'header');
 
         $menu->addChild('configuration', [
             'label' => 'Configuration',

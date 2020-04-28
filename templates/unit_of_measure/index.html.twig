@@ -3,32 +3,38 @@
 {% block page_title %}Unit Of Measurement{% endblock %}
 {% block page_subtitle %}configuration{% endblock %}
 
-{% block page_content %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for unit_of_measure in unit_of_measures %}
-            <tr>
-                <td>{{ unit_of_measure.name }}</td>
-                <td>{{ unit_of_measure.unitOfMeasureType }}</td>
-                <td>
-                    <a href="{{ path('unit_of_measure_show', {'id': unit_of_measure.id}) }}"><i class="fas fa-eye"></i></a>
-                    <a href="{{ path('unit_of_measure_edit', {'id': unit_of_measure.id}) }}"><i class="fas fa-edit"></i></a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block topRight %}
+    <div class="btn-group float-right" role="group">
+        <a href="{{ path('unit_of_measure_new') }}" class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp;Create new</a>
+    </div>
+{% endblock %}
 
-    <a href="{{ path('unit_of_measure_new') }}"><i class="fas fa-plus"></i>&nbsp;Create new</a>
+{% block body %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Factor</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for unit_of_measure in unit_of_measures %}
+        <tr>
+            <td>{{ unit_of_measure.name }}</td>
+            <td>{{ unit_of_measure.unitOfMeasureType }}</td>
+            <td>{{ unit_of_measure.factor }}</td>
+            <td>
+                <a href="{{ path('unit_of_measure_show', {'id': unit_of_measure.id}) }}" class="btn btn-default"><i class="fas fa-eye"></i></a>
+                <a href="{{ path('unit_of_measure_edit', {'id': unit_of_measure.id}) }}" class="btn btn-default"><i class="fas fa-edit"></i></a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="3">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

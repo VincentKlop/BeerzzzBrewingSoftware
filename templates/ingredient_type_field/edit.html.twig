@@ -3,10 +3,12 @@
 {% block page_title %}Edit Ingredient Type Field{% endblock %}
 {% block page_subtitle %}configuration{% endblock %}
 
-{% block page_content %}
-    {{ include('ingredient_type_field/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('ingredient_type_field_index') }}"><i class="fas fa-list"></i></a>
+{% block topRight %}
+    <a href="{{ path('ingredient_type_field_index') }}" class="btn btn-default"><i class="fas fa-list"></i></a>
 
     {{ include('ingredient_type_field/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    {{ include('ingredient_type_field/_form.html.twig', {'button_label': 'Update'}) }}
 {% endblock %}

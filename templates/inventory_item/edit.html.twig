@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Edit Inventory Item{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block topRight %}
+    <a href="{{ path('inventory_item_index') }}" class="btn btn-default"><i class="fas fa-list"></i></a>
+    {{ include('inventory_item/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    {{ include('inventory_item/_form.html.twig', {'button_label': 'Update'}) }}
+{% endblock %}
