@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\IngredientType;
 use App\Entity\UnitOfMeasure;
 use App\Entity\UnitOfMeasureType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -27,5 +29,24 @@ class UnitOfMeasureRepository extends ServiceEntityRepository
         $queryBuilder->addOrderBy('UnitOfMeasure.factor', 'ASC');
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findUnitOfMeasureBelongingToIngredientTypeQueryBuilder(IngredientType $ingredientType): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilder('unitOfMeasure');
+        $queryBuilder->innerJoin(UnitOfMeasureType::class, 'unitOfMeasureType', 'WITH', 'unitOfMeasure.unitOfMeasureType = unitOfMeasureType');
+        $queryBuilder->innerJoin(IngredientType::class, 'ingredientType', 'WITH', 'ingredientType.unitOfMeasurementType = unitOfMeasureType');
+        $queryBuilder->where('ingredientType = :ingredientType');
+        $queryBuilder->setParameter('ingredientType', $ingredientType);
+
+        return $queryBuilder;
+    }
+
+    public function findDefaultUnitOfMeasureBelongingToIngredientType(IngredientType $ingredientType): ?UnitOfMeasure
+    {
+        $queryBuilder = $this->findUnitOfMeasureBelongingToIngredientTypeQueryBuilder($ingredientType);
+        $queryBuilder->andWhere('unitOfMeasure.factor = 1');
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }

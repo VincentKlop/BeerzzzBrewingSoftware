@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\InventoryItem;
 use App\Form\InventoryItemType;
 use App\Repository\InventoryItemRepository;
+use App\Form\CreateInventoryItemFlow;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,17 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class InventoryItemController extends AbstractController
 {
+    /**
+     * @var CreateInventoryItemFlow
+     */
+    private $createInventoryItemFlow;
+
+    public function __construct(
+        CreateInventoryItemFlow $createInventoryItemFlow
+    ) {
+        $this->createInventoryItemFlow = $createInventoryItemFlow;
+    }
+
     /**
      * @Route("/", name="inventory_item_index", methods={"GET"})
      */
@@ -31,20 +43,38 @@ class InventoryItemController extends AbstractController
     public function new(Request $request): Response
     {
         $inventoryItem = new InventoryItem();
-        $form = $this->createForm(InventoryItemType::class, $inventoryItem);
+        $flow = $this->createInventoryItemFlow; // must match the flow's service id
+        $flow->bind($inventoryItem);
+
+        // form of the current step
+        $form = $flow->createForm();
+
+
+        //$form = $this->createForm(InventoryItemType::class, $inventoryItem);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($inventoryItem);
-            $entityManager->flush();
+            $flow->saveCurrentStepData($form);
 
-            return $this->redirectToRoute('inventory_item_index');
+            if ($flow->nextStep()) {
+                // form for the next step
+                $form = $flow->createForm();
+            } else {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($inventoryItem);
+                $entityManager->flush();
+
+                $flow->reset(); // remove step data from the session
+
+                return $this->redirectToRoute('inventory_item_index');
+            }
+
         }
 
         return $this->render('inventory_item/new.html.twig', [
             'inventory_item' => $inventoryItem,
             'form' => $form->createView(),
+            'flow' => $flow,
         ]);
     }
 

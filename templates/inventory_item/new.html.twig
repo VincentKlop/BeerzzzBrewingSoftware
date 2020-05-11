@@ -10,3 +10,42 @@
 {% block body %}
     {{ include('inventory_item/_form.html.twig') }}
 {% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        $('#inventory_item_ingredientType').change(function(){
+            var ingredientTypeSelector = $(this);
+
+            // Request the neighborhoods of the selected city.
+            $.ajax({
+                url: "{{ path('IngredientTypeUnitOfMeasuresApi') }}",
+                type: "GET",
+                dataType: "JSON",
+                data: {
+                    ingredientTypeId: ingredientTypeSelector.val()
+                },
+                success: function (unitOfMeasures) {
+                    var unitOfMeasureSelect = $("#inventory_item_unitOfMeasure");
+
+                    // Remove current options
+                    unitOfMeasureSelect.html('');
+
+                    $.each(unitOfMeasures, function (key, unitOfMeasure) {
+                        var option = '<option value="' + unitOfMeasure.id + '"';
+
+                        if (unitOfMeasure.factor === 1) {
+                            option = option + ' selected="selected"';
+                        }
+
+                        option = option + '>' + unitOfMeasure.name + '</option>';
+
+                        unitOfMeasureSelect.append(option);
+                    });
+                },
+                error: function (err) {
+                    alert("An error ocurred while loading data ...");
+                }
+            });
+        });
+    </script>
+{% endblock %}

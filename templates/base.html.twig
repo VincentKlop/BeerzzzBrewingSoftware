@@ -28,3 +28,9 @@
     <strong>Copyright &copy; 2020 <a href="#">Beerzzz</a>.</strong> All rights reserved.
 </footer>
 {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/adminlte/adminlte.js') }}"></script>
+    {% block page_javascripts %}
+    {% endblock %}
+{% endblock %}

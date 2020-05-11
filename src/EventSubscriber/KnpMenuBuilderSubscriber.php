@@ -58,7 +58,8 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             'route' => 'unit_of_measure_index',
             'label' => 'Unit of Measurement',
             'childOptions' => $event->getChildOptions()
-        ])->setLabelAttribute('icon', 'fas fa-ruler-horizontal');
+        ])->setLabelAttribute('icon', 'fas fa-ruler-horizontal')
+        ->setExtra('routes', [['route' => 'unit_of_measure_new']]);
 
         $menu->getChild('configuration')->addChild('Unit of Measurement Types', [
             'route' => 'unit_of_measure_type_index',
