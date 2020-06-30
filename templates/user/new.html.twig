@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}New User{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block topRight %}
+    <a href="{{ path('user_index') }}" class="btn btn-default"><i class="fas fa-list"></i></a>
+{% endblock %}
+
+{% block body %}
+    {{ include('user/_form.html.twig') }}
+{% endblock %}

@@ -8,7 +8,11 @@
 {% endblock %}
 
 {% block body %}
-    {{ include('inventory_item/_form.html.twig') }}
+    {% if flow.getCurrentStepNumber() == 1 %}
+        {{ include('inventory_item/_form.html.twig', {'button_label': 'Next'}) }}
+    {% elseif flow.getCurrentStepNumber() == 2 %}
+        {{ include('inventory_item/_form.html.twig', {'button_label': 'Finish'}) }}
+    {% endif %}
 {% endblock %}
 
 {% block page_javascripts %}

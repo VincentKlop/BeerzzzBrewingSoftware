@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block body %}
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Ingredient Types</th>
@@ -28,7 +28,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="2">no records found</td>
+                <td colspan="3">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

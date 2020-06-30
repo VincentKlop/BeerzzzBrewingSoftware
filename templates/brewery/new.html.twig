@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}New Brewery{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block topRight %}
+    <a href="{{ path('brewery_index') }}" class="btn btn-default"><i class="fas fa-list"></i></a>
+{% endblock %}
+
+{% block body %}
+    {{ include('brewery/_form.html.twig') }}
+{% endblock %}

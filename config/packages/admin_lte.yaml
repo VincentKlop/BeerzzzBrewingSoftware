@@ -19,5 +19,5 @@ admin_lte:
 
     routes:
         adminlte_welcome: home
-        adminlte_login: login
-        adminlte_profile: profile
+        adminlte_login: app_login
+        adminlte_profile: user_profile

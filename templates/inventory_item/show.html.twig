@@ -24,6 +24,10 @@
                 <th>Extra information</th>
                 <td>{{ inventory_item.inventoryItemFieldValues|join(', ') }}</td>
             </tr>
+            <tr>
+                <th>Best before</th>
+                <td>{{ inventory_item.bestBefore }}</td>
+            </tr>
         </tbody>
     </table>
 {% endblock %}

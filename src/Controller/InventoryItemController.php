@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\InventoryItem;
-use App\Form\InventoryItemType;
+use App\Form\EditInventoryItemType;
+use App\Form\InventoryItemFilterType;
 use App\Repository\InventoryItemRepository;
 use App\Form\CreateInventoryItemFlow;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/inventory-item")
  */
-class InventoryItemController extends AbstractController
+class InventoryItemController extends AbstractAdminController
 {
     /**
      * @var CreateInventoryItemFlow
@@ -30,10 +31,23 @@ class InventoryItemController extends AbstractController
     /**
      * @Route("/", name="inventory_item_index", methods={"GET"})
      */
-    public function index(InventoryItemRepository $inventoryItemRepository): Response
+    public function index(Request $request, InventoryItemRepository $inventoryItemRepository): Response
     {
+        $queryBuilder = $inventoryItemRepository->createListQueryBuilder();
+
+        $filterForm = $this->createForm(InventoryItemFilterType::class, null, ['user' => $this->getUser()]);
+
+        $filterForm->handleRequest($request);
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            InventoryItemFilterType::applyFilters($queryBuilder, $filterForm->getData());
+        }
+
+        $pagination = $this->paginate($queryBuilder);
+
         return $this->render('inventory_item/index.html.twig', [
-            'inventory_items' => $inventoryItemRepository->findAll(),
+            'inventory_items' => $pagination,
+            'pagination' => $pagination,
+            'filterForm' => $filterForm->createView(),
         ]);
     }
 
@@ -43,14 +57,11 @@ class InventoryItemController extends AbstractController
     public function new(Request $request): Response
     {
         $inventoryItem = new InventoryItem();
-        $flow = $this->createInventoryItemFlow; // must match the flow's service id
+        $flow = $this->createInventoryItemFlow;
+        $flow->setGenericFormOptions(['user' => $this->getUser()]);
         $flow->bind($inventoryItem);
 
-        // form of the current step
         $form = $flow->createForm();
-
-
-        //$form = $this->createForm(InventoryItemType::class, $inventoryItem);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -61,6 +72,8 @@ class InventoryItemController extends AbstractController
                 $form = $flow->createForm();
             } else {
                 $entityManager = $this->getDoctrine()->getManager();
+
+                /** @var EntityManager $entityManager */
                 $entityManager->persist($inventoryItem);
                 $entityManager->flush();
 
@@ -93,7 +106,7 @@ class InventoryItemController extends AbstractController
      */
     public function edit(Request $request, InventoryItem $inventoryItem): Response
     {
-        $form = $this->createForm(InventoryItemType::class, $inventoryItem);
+        $form = $this->createForm(EditInventoryItemType::class, $inventoryItem, ['user' => $this->getUser()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Users{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block topRight %}
+    <a href="{{ path('user_new') }}" class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp;Create new</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Brewery(s)</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles|join(', ') }}</td>
+                <td>{{ user.brewery|join(', ') }}</td>
+                <td>
+                    <a href="{{ path('user_show', {'id': user.id}) }}" class="btn btn-default"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-default"><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

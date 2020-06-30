@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Edit Beer Style{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block topRight %}
+    <a href="{{ path('beer_style_index') }}" class="btn btn-default"><i class="fas fa-list"></i></a>
+    {{ include('beer_style/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    {{ include('beer_style/_form.html.twig', {'button_label': 'Update'}) }}
+{% endblock %}

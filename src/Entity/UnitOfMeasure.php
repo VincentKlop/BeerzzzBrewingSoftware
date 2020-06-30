@@ -28,7 +28,7 @@ class UnitOfMeasure
     private $unitOfMeasureType;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $factor;
 
@@ -71,7 +71,7 @@ class UnitOfMeasure
         return $this->factor;
     }
 
-    public function setFactor(float $factor): self
+    public function setFactor(?float $factor): self
     {
         $this->factor = $factor;
 

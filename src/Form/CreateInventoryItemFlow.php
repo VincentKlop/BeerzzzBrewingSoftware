@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Form\InventoryItemType;
+use App\Entity\InventoryItem;
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 
@@ -12,14 +12,21 @@ class CreateInventoryItemFlow extends FormFlow {
         return [
             [
                 'label' => 'ingredient',
-                'form_type' => InventoryItemType::class,
+                'form_type' => NewInventoryItemType::class,
             ],
             [
                 'label' => 'extra information',
-                'form_type' => InventoryItemType::class,
-//                'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
-//                    return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
-//                },
+                'form_type' => NewInventoryItemType::class,
+                'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                            if($estimatedCurrentStepNumber < 2) {
+                                return false;
+                            }
+
+                            /** @var InventoryItem $inventoryItem */
+                            $inventoryItem = $flow->getFormData();
+
+                            return count($inventoryItem->getIngredientType()->getExtraFields()) === 0;
+                },
             ],
         ];
     }

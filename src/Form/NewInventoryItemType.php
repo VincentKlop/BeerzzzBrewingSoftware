@@ -4,19 +4,22 @@ namespace App\Form;
 
 use App\Entity\IngredientType;
 use App\Entity\InventoryItem;
+use App\Entity\InventoryItemFieldValue;
+use App\Entity\Location;
 use App\Entity\UnitOfMeasure;
+use App\Entity\User;
+use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class InventoryItemType extends AbstractType
+class NewInventoryItemType extends AbstractType
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -24,16 +27,31 @@ class InventoryItemType extends AbstractType
     /** @var IngredientType */
     private $defaultIngredientType;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /** @var LocationRepository */
+    private $locationRepository;
+
+    public function __construct(EntityManagerInterface $entityManager, LocationRepository $locationRepository)
     {
         $this->entityManager = $entityManager;
         $this->defaultIngredientType = $this->entityManager->getRepository(IngredientType::class)->find(['id' => 1]);
+        $this->locationRepository = $locationRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         switch ($options['flow_step']) {
             case 1:
+                $builder->add(
+                    'location',
+                    EntityType::class,
+                    [
+                        'class' => Location::class,
+                        'query_builder' => $this->locationRepository->getLocationsForUserQueryBuilder($options['user']),
+                        'required' => true,
+                        'multiple' => false,
+                    ]
+                );
+
                 $builder->add(
                     'ingredientType',
                     EntityType::class,
@@ -62,6 +80,28 @@ class InventoryItemType extends AbstractType
                         ]
                     ]
                 );
+
+                $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+                    /** @var InventoryItem $inventoryItem */
+                    $inventoryItem = $event->getData();
+
+                    $extraFields = $inventoryItem->getIngredientType()->getExtraFields();
+                    $existingInventoryItemFields = $inventoryItem->getInventoryItemFieldValues();
+
+                    $existingItemFieldIds = [];
+                    foreach($existingInventoryItemFields as $existingInventoryItemField) {
+                        $existingItemFieldIds[] = $existingInventoryItemField->getIngredientTypeField()->getId();
+                    }
+
+                    foreach($extraFields as $extraField) {
+                        if(!in_array($extraField->getId(), $existingItemFieldIds)) {
+                            $inventoryItemFieldValue = new InventoryItemFieldValue();
+                            $inventoryItemFieldValue->setIngredientTypeField($extraField);
+                            $inventoryItem->addInventoryItemFieldValue($inventoryItemFieldValue);
+                        }
+                    }
+                });
+
                 break;
         }
 
@@ -122,6 +162,8 @@ class InventoryItemType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setRequired('user');
+        $resolver->setAllowedTypes('user', array(User::class, 'int'));
         $resolver->setDefaults([
             'data_class' => InventoryItem::class,
         ]);

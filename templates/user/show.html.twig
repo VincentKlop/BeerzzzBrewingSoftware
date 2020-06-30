@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}User{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block topRight %}
+    <a href="{{ path('user_index') }}" class="btn btn-default"><i class="fas fa-list"></i></a>
+    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-default"><i class="fas fa-edit"></i></a>
+    {{ include('user/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>
+                    {% for role in user.roles %}
+                        <li>{{ role }}</li>
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

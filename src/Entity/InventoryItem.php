@@ -30,7 +30,7 @@ class InventoryItem
     private $count;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\InventoryItemFieldValue", mappedBy="inventoryItem", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\InventoryItemFieldValue", mappedBy="inventoryItem", orphanRemoval=true, cascade={"persist"})
      */
     private $inventoryItemFieldValues;
 
@@ -38,6 +38,17 @@ class InventoryItem
      * @ORM\Column(type="string", length=255)
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $bestBefore;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Location")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $location;
 
     public function __construct()
     {
@@ -119,5 +130,29 @@ class InventoryItem
     public function isNew(): bool
     {
         return $this->id === null;
+    }
+
+    public function getBestBefore(): ?\DateTimeInterface
+    {
+        return $this->bestBefore;
+    }
+
+    public function setBestBefore(?\DateTimeInterface $bestBefore): self
+    {
+        $this->bestBefore = $bestBefore;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
+
+        return $this;
     }
 }

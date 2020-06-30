@@ -26,7 +26,9 @@ class IngredientTypeType extends AbstractType
             EntityType::class,
             [
                 'class' => IngredientTypeField::class,
-                'multiple' => true
+                'multiple' => true,
+                'by_reference' => false,
+                'required' => false
             ]
         );
     }

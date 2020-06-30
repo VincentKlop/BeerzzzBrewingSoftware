@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}New Beer Style{% endblock %}
+{% block page_subtitle %}configuration{% endblock %}
+
+{% block topRight %}
+    <a href="{{ path('beer_style_index') }}" class="btn btn-default"><i class="fas fa-list"></i></a>
+{% endblock %}
+
+{% block body %}
+    {{ include('beer_style/_form.html.twig') }}
+{% endblock %}

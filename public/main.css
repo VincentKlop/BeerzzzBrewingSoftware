@@ -1,0 +1,4 @@
+.table.table-bordered.table-recipe tr th:first-child,
+.table.table-bordered.table-recipe tr td:first-child{
+    width: 200px;
+}
