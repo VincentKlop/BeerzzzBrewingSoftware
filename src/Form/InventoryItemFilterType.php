@@ -17,8 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InventoryItemFilterType extends AbstractType
 {
-    /** @var LocationRepository */
-    private $locationRepository;
+    private LocationRepository $locationRepository;
 
     public function __construct(LocationRepository $locationRepository) {
         $this->locationRepository = $locationRepository;

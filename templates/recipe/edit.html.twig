@@ -1,5 +1,78 @@
 {% extends 'base.html.twig' %}
 
+{% block page_javascripts %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            var $maltWrapper = $('.js-malts-wrapper');
+            $maltWrapper.on('click', '.js-remove-malt', function(e) {
+                e.preventDefault();
+                $(this).closest('.js-malt-item')
+                    .fadeOut()
+                    .remove();
+            });
+            $maltWrapper.on('click', '.js-malt-add', function(e) {
+                e.preventDefault();
+                // Get the data-prototype explained earlier
+                var prototype = $maltWrapper.data('prototype');
+                // get the new index
+                var index = $maltWrapper.data('index');
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+                // increase the index with one for the next item
+                $maltWrapper.data('index', index + 1);
+                // Display the form in the page before the "new" link
+                $('.maltCollection').find('tbody').append(newForm);
+            });
+
+            var $hopWrapper = $('.js-hops-wrapper');
+            $hopWrapper.on('click', '.js-remove-hop', function(e) {
+                e.preventDefault();
+                $(this).closest('.js-hop-item')
+                    .fadeOut()
+                    .remove();
+            });
+            $hopWrapper.on('click', '.js-hop-add', function(e) {
+                e.preventDefault();
+                // Get the data-prototype explained earlier
+                var prototype = $hopWrapper.data('prototype');
+                // get the new index
+                var index = $hopWrapper.data('index');
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+                // increase the index with one for the next item
+                $hopWrapper.data('index', index + 1);
+                // Display the form in the page before the "new" link
+                $('.hopCollection').find('tbody').append(newForm);
+            });
+
+            var $mashWrapper = $('.js-mash-wrapper');
+            $mashWrapper.on('click', '.js-remove-mash', function(e) {
+                e.preventDefault();
+                $(this).closest('.js-mash-item')
+                    .fadeOut()
+                    .remove();
+            });
+            $mashWrapper.on('click', '.js-mash-add', function(e) {
+                e.preventDefault();
+                // Get the data-prototype explained earlier
+                var prototype = $mashWrapper.data('prototype');
+                // get the new index
+                var index = $mashWrapper.data('index');
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+                // increase the index with one for the next item
+                $mashWrapper.data('index', index + 1);
+                // Display the form in the page before the "new" link
+                $('.mashCollection').find('tbody').append(newForm);
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block page_title %}Edit Recipe{% endblock %}
 {% block page_subtitle %}{% endblock %}
 

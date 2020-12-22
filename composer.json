@@ -6,6 +6,8 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "craue/formflow-bundle": "^3.3",
+        "dompdf/dompdf": "^0.8.5",
+        "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "kevinpapst/adminlte-bundle": "^3.0",
         "knplabs/knp-menu-bundle": "^3.0",
         "knplabs/knp-paginator-bundle": "^5.2",

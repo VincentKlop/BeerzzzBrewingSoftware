@@ -1,8 +1,8 @@
 {% extends '@AdminLTE/layout/default-layout.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('bundles/adminlte/adminlte.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('main.css')) }}" media="all">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('bundles/adminlte/adminlte.css')) }}" media="all">
 {% endblock %}
 
 

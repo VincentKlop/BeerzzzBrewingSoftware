@@ -20,8 +20,15 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class InventoryItemRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    /** @var IngredientTypeRepository */
+    private $ingredientTypeRepository;
+
+    public function __construct(
+        ManagerRegistry $registry,
+        IngredientTypeRepository $ingredientTypeRepository
+    ) {
+        $this->ingredientTypeRepository = $ingredientTypeRepository;
+
         parent::__construct($registry, InventoryItem::class);
     }
 
@@ -40,6 +47,36 @@ class InventoryItemRepository extends ServiceEntityRepository
         $queryBuilder->join(UnitOfMeasure::class, 'UnitOfMeasure', 'WITH', 'IngredientType.unitOfMeasurementType = UnitOfMeasure.unitOfMeasureType and UnitOfMeasure.factor = 1');
         $queryBuilder->addOrderBy('IngredientType.name', 'ASC');
         $queryBuilder->addOrderBy('InventoryItem.description', 'ASC');
+
+        return $queryBuilder;
+    }
+
+    public function findYeastInventory() {
+        $yeastIngredientType = $this->ingredientTypeRepository->findOneBy(['name' => 'Yeast']);
+
+        $queryBuilder = $this->createQueryBuilder('InventoryItem');
+        $queryBuilder->join(IngredientType::class, 'IngredientType', 'WITH', 'InventoryItem.ingredientType = IngredientType');
+        self::addIngredientTypeFilter($queryBuilder, $yeastIngredientType);
+
+        return $queryBuilder;
+    }
+
+    public function findMaltInventory() {
+        $yeastIngredientType = $this->ingredientTypeRepository->findOneBy(['name' => 'Malt']);
+
+        $queryBuilder = $this->createQueryBuilder('InventoryItem');
+        $queryBuilder->join(IngredientType::class, 'IngredientType', 'WITH', 'InventoryItem.ingredientType = IngredientType');
+        self::addIngredientTypeFilter($queryBuilder, $yeastIngredientType);
+
+        return $queryBuilder;
+    }
+
+    public function findHopInventory() {
+        $yeastIngredientType = $this->ingredientTypeRepository->findOneBy(['name' => 'Hop']);
+
+        $queryBuilder = $this->createQueryBuilder('InventoryItem');
+        $queryBuilder->join(IngredientType::class, 'IngredientType', 'WITH', 'InventoryItem.ingredientType = IngredientType');
+        self::addIngredientTypeFilter($queryBuilder, $yeastIngredientType);
 
         return $queryBuilder;
     }

@@ -1,10 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controller;
 
 use App\Entity\Recipe;
 use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,6 +70,36 @@ class RecipeController extends AbstractController
             'recipe' => $recipe,
             'totalAmountOfMalts' => $totalAmountOfMalts['totalCount']
         ]);
+    }
+
+    /**
+     * @Route("/{id}/pdf", name="recipe_pdf", methods={"GET"})
+     */
+    public function pdf(Recipe $recipe): PdfResponse
+    {
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Halvetica');
+        $pdfOptions->set('isRemoteEnabled', true);
+
+        $dompdf = new Dompdf($pdfOptions);
+
+        $totalAmountOfMalts = $this->recipeRepository->findTotalMaltsForRecipe($recipe);
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('recipe/pdf.html.twig', [
+            'recipe' => $recipe,
+            'totalAmountOfMalts' => $totalAmountOfMalts['totalCount']
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $dompdf->stream("recipe.pdf", [
+            "Attachment" => true
+        ]);
+
+        die(); // stop outputting data, otherwise invalid pdf
     }
 
     /**

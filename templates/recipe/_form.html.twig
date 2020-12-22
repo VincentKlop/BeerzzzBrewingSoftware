@@ -1,4 +1,112 @@
+{% import _self as formMacros %}
+
+{% macro printMaltRow(malt) %}
+    <tr class="js-malt-item">
+        <td>{{ form_widget(malt.malt) }}</td>
+        <td>{{ form_widget(malt.count) }}</td>
+        <td style="width: 60px;"><button class="js-remove-malt btn btn-danger"><i class="fa fa-trash fa-fw"></i></button></td>
+    </tr>
+{% endmacro %}
+
+{% macro printMashRow(mash) %}
+    <tr class="js-mash-item">
+        <td>{{ form_widget(mash.temperature) }}</td>
+        <td>{{ form_widget(mash.unitOfMeasureTemprature) }}</td>
+        <td>{{ form_widget(mash.timeInMinutes) }}</td>
+        <td style="width: 60px;"><button class="js-remove-mash btn btn-danger"><i class="fa fa-trash fa-fw"></i></button></td>
+    </tr>
+{% endmacro %}
+
+{% macro printHopRow(hop) %}
+    <tr class="js-hop-item">
+        <td>{{ form_widget(hop.hop) }}</td>
+        <td>{{ form_widget(hop.count) }}</td>
+        <td>{{ form_widget(hop.targetAlpha) }}</td>
+        <td>{{ form_widget(hop.timeCount) }}</td>
+        <td>{{ form_widget(hop.unitOfMeasureTime) }}</td>
+        <td style="width: 60px;"><button class="js-remove-hop btn btn-danger"><i class="fa fa-trash fa-fw"></i></button></td>
+    </tr>
+{% endmacro %}
+
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.targetAlcoholVolume)}}
+    {{ form_row(form.preBoilWater) }}
+    {{ form_row(form.startSG) }}
+    {{ form_row(form.endSG) }}
+    {{ form_row(form.IBU) }}
+    {{ form_row(form.targetColor) }}
+    {{ form_row(form.spargeWaterAmount) }}
+    {{ form_row(form.yeast) }}
+    <h3>Malts</h3>
+     <div class="js-malts-wrapper"
+         data-prototype="{{ formMacros.printMaltRow(form.malts.vars.prototype)|e('html_attr') }}"
+         data-index="{{ form.malts|length }}"
+     >
+        <table class="maltCollection table table-striped">
+            <thead>
+                <th>Malt</th>
+                <th>Count (grams)</th>
+                <th></th>
+            </thead>
+            <tbody>
+                {% for malt in form.malts %}
+                    {{ formMacros.printMaltRow(malt) }}
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="#" class="js-malt-add">
+            <span class="fa fa-plus-circle"></span>
+            Add a Malt
+        </a>
+    </div>
+    <h3>Mashing Rows</h3>
+    <div class="js-mash-wrapper"
+     data-prototype="{{ formMacros.printMashRow(form.recipeMashRows.vars.prototype)|e('html_attr') }}"
+     data-index="{{ form.recipeMashRows|length }}"
+    >
+        <table class="mashCollection table table-striped">
+            <thead>
+            <th>Temperature</th>
+            <th>Unit of Temperature</th>
+            <th>Time in Minutes</th>
+            </thead>
+            <tbody>
+            {% for mash in form.recipeMashRows %}
+                {{ formMacros.printMashRow(mash) }}
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="#" class="js-mash-add">
+            <span class="fa fa-plus-circle"></span>
+            Add a Mash Row
+        </a>
+    </div>
+    <h3>Hops</h3>
+    <div class="js-hops-wrapper"
+         data-prototype="{{ formMacros.printHopRow(form.hops.vars.prototype)|e('html_attr') }}"
+         data-index="{{ form.hops|length }}"
+    >
+        <table class="hopCollection table table-striped">
+            <thead>
+            <th>Hop</th>
+            <th>Count (grams)</th>
+            <th>Target Alpha%</th>
+            <th>Time</th>
+            <th>Time Unit</th>
+            <th></th>
+            </thead>
+            <tbody>
+            {% for hop in form.hops %}
+                {{ formMacros.printHopRow(hop) }}
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="#" class="js-hop-add">
+            <span class="fa fa-plus-circle"></span>
+            Add a Hop
+        </a>
+    </div>
+
     <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+

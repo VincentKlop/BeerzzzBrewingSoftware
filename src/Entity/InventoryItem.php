@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -53,6 +53,11 @@ class InventoryItem
     public function __construct()
     {
         $this->inventoryItemFieldValues = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->description;
     }
 
     public function getId(): ?int

@@ -25,6 +25,9 @@ class RecipeRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('recipe');
         $queryBuilder->innerJoin(RecipeMaltRows::class, 'recipeMaltRows', 'WITH', 'recipeMaltRows.recipe = recipe');
         $queryBuilder->select('SUM(recipeMaltRows.count) as totalCount');
+        $queryBuilder->andWhere('recipe.id = :recipe');
+        $queryBuilder->setParameter('recipe', $recipe);
+
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }

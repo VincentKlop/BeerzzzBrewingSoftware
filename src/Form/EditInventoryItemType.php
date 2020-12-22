@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Form;
 
@@ -9,7 +9,9 @@ use App\Entity\Location;
 use App\Entity\UnitOfMeasure;
 use App\Entity\User;
 use App\Repository\LocationRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -21,14 +23,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditInventoryItemType extends AbstractType
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
 
-    /** @var IngredientType */
-    private $defaultIngredientType;
-
-    /** @var LocationRepository */
-    private $locationRepository;
+    private EntityManagerInterface $entityManager;
+    private IngredientType $defaultIngredientType;
+    private LocationRepository $locationRepository;
 
     public function __construct(EntityManagerInterface $entityManager, LocationRepository $locationRepository)
     {

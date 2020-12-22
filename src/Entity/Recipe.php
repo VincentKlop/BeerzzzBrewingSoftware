@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Recipe
 {
     /**
+     * @var integer
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -19,69 +21,93 @@ class Recipe
     private $id;
 
     /**
+     * @var float
+     *
      * @ORM\Column(type="float")
      */
     private $targetAlcoholVolume;
 
     /**
+     * @var float
+     *
      * @ORM\Column(type="float")
      */
     private $preBoilWater;
 
     /**
+     * @var integer
+     *
      * @ORM\Column(type="integer")
      */
     private $startSG;
 
     /**
+     * @var integer
+     *
      * @ORM\Column(type="integer")
      */
     private $endSG;
 
     /**
+     * @var integer
+     *
      * @ORM\Column(type="integer")
      */
     private $IBU;
 
     /**
+     * @var integer
+     *
      * @ORM\Column(type="integer")
      */
     private $targetColor;
 
     /**
+     * @var integer
+     *
      * @ORM\Column(type="integer")
      */
     private $calculatedColor;
 
     /**
+     * @var InventoryItem
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\InventoryItem")
      * @ORM\JoinColumn(nullable=false)
      */
     private $yeast;
 
     /**
+     * @var float
+     *
      * @ORM\Column(type="float")
      */
     private $spargeWaterAmount;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @var BeerStyle
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\BeerStyle")
      * @ORM\JoinColumn(nullable=false)
      */
     private $style;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\RecipeMaltRows", mappedBy="recipe", orphanRemoval=true)
+     * @var Collection|RecipeMaltRows[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\RecipeMaltRows", mappedBy="recipe", orphanRemoval=true, cascade={"persist"})
      */
     private $malts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\RecipeHopRows", mappedBy="recipe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\RecipeHopRows", mappedBy="recipe", orphanRemoval=true, cascade={"persist"})
      */
     private $hops;
 
@@ -90,10 +116,16 @@ class Recipe
      */
     private $mashWaterAmount;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\RecipeMashRows", mappedBy="recipe", orphanRemoval=true, cascade={"persist"})
+     */
+    private $recipeMashRows;
+
     public function __construct()
     {
         $this->malts = new ArrayCollection();
         $this->hops = new ArrayCollection();
+        $this->recipeMashRows = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -303,6 +335,37 @@ class Recipe
     public function setMashWaterAmount(float $mashWaterAmount): self
     {
         $this->mashWaterAmount = $mashWaterAmount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RecipeMashRows[]
+     */
+    public function getRecipeMashRows(): Collection
+    {
+        return $this->recipeMashRows;
+    }
+
+    public function addRecipeMashRow(RecipeMashRows $recipeMashRow): self
+    {
+        if (!$this->recipeMashRows->contains($recipeMashRow)) {
+            $this->recipeMashRows[] = $recipeMashRow;
+            $recipeMashRow->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipeMashRow(RecipeMashRows $recipeMashRow): self
+    {
+        if ($this->recipeMashRows->contains($recipeMashRow)) {
+            $this->recipeMashRows->removeElement($recipeMashRow);
+            // set the owning side to null (unless already changed)
+            if ($recipeMashRow->getRecipe() === $this) {
+                $recipeMashRow->setRecipe(null);
+            }
+        }
 
         return $this;
     }

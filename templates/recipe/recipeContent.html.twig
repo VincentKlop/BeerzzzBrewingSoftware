@@ -1,0 +1,135 @@
+<h1>{{ recipe.name }}</h1>
+<table class="table table-bordered table-recipe">
+    <tbody>
+    <tr>
+        <th>Beer</th>
+        <td></td>
+        <td rowspan="7" align="right"><img src="{{ absolute_url(asset('beerzzz.png')) }}" style="width: 240px; height: 240px;"></td>
+    </tr>
+    <tr>
+        <td>Alcohol</td>
+        <td>{{ recipe.targetAlcoholVolume }} % alc.</td>
+    </tr>
+    <tr>
+        <td>Quantity pre-boil</td>
+        <td>{{ recipe.preBoilWater }} liter</td>
+    </tr>
+    <tr>
+        <td>Start S.G.</td>
+        <td>{{ recipe.startSG }}</td>
+    </tr>
+    <tr>
+        <td>End S.G.</td>
+        <td>{{ recipe.endSG }}</td>
+    </tr>
+    <tr>
+        <td>Bitterness</td>
+        <td>{{ recipe.IBU }} IBU</td>
+    </tr>
+    <tr>
+        <td>Color</td>
+        <td>{{ recipe.targetColor }} EBC</td>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<table class="table table-bordered table-recipe">
+    <tbody>
+    <tr>
+        <th>Ingredients (grams)</th>
+        <td></td>
+        <th>Gram</th>
+    </tr>
+    {% for malt in recipe.malts %}
+        <tr>
+            <td></td>
+            <td>{{ malt.malt.description }}</td>
+            <td>{{ malt.count }}</td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <th>Total</th>
+        <td></td>
+        <th>{{ totalAmountOfMalts }}</th>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<table class="table table-bordered table-recipe">
+    <tbody>
+    <tr>
+        <th>Hops (gram - %alfa)</th>
+        <td></td>
+        <th>Time</th>
+        <th>Gram</th>
+        <th>%Alfa</th>
+    </tr>
+    {% for hop in recipe.hops %}
+        <tr>
+            <td></td>
+            <td>{{ hop.hop.description }}</td>
+            <td>{{ hop.timeCount }} {{ hop.unitOfMeasureTime.name }}</td>
+            <td>{{ hop.count }}</td>
+            <td>{{ hop.targetAlpha }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<br/>
+<table class="table table-bordered table-recipe">
+    <tbody>
+    <tr>
+        <th>Yeast type</th>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>{{ recipe.yeast.description }}</td>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<table class="table table-bordered table-recipe">
+    <tbody>
+    <tr>
+        <th>Water</th>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Mashwater</td>
+        <td>{{ recipe.mashWaterAmount }} liter</td>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<table class="table table-bordered table-recipe">
+    <tbody>
+        <tr>
+            <th>Mash Temperature ({{ recipe.recipeMashRows[0].unitOfMeasureTemprature }})</th>
+            {% for mashRow in recipe.recipeMashRows|sort((a, b) => a.temperature <=> b.temperature) %}
+                <td>{{ mashRow.temperature }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Time in minutes</th>
+            {% for mashRow in recipe.recipeMashRows|sort((a, b) => a.temperature <=> b.temperature) %}
+                <td>{{ mashRow.timeInMinutes }}</td>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+<br/>
+<table class="table table-bordered table-recipe">
+    <tbody>
+    <tr>
+        <th>Sparging</th>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Sparge-water</td>
+        <td>
+            {{ recipe.spargeWaterAmount }} liter
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Form;
 
@@ -21,14 +21,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewInventoryItemType extends AbstractType
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var IngredientType */
+    /** @var IngredientType|object|null */
     private $defaultIngredientType;
-
-    /** @var LocationRepository */
-    private $locationRepository;
+    private LocationRepository $locationRepository;
 
     public function __construct(EntityManagerInterface $entityManager, LocationRepository $locationRepository)
     {

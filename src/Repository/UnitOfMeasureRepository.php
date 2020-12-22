@@ -42,6 +42,24 @@ class UnitOfMeasureRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
+    public function findUnitOfMeasureByTypeQueryBuilder(UnitOfMeasureType $unitOfMeasureType): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilder('unitOfMeasure');
+        $queryBuilder->where('unitOfMeasure.unitOfMeasureType = :unitOfMeasureType');
+        $queryBuilder->setParameter('unitOfMeasureType', $unitOfMeasureType);
+
+        return $queryBuilder;
+    }
+
+    public function findUnitOfMeasureByType(UnitOfMeasureType $unitOfMeasureType): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilder('unitOfMeasure');
+        $queryBuilder->where('unitOfMeasure.unitOfMeasureType = :unitOfMeasureType');
+        $queryBuilder->setParameter('unitOfMeasureType', $unitOfMeasureType);
+
+        return $queryBuilder;
+    }
+
     public function findDefaultUnitOfMeasureBelongingToIngredientType(IngredientType $ingredientType): ?UnitOfMeasure
     {
         $queryBuilder = $this->findUnitOfMeasureBelongingToIngredientTypeQueryBuilder($ingredientType);
