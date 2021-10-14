@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: BeerzzzBrewingSoftware
+  annotations:
+    github.com/project-slug: VincentKlop/BeerzzzBrewingSoftware
+spec:
+  type: other
+  lifecycle: unknown
+  owner: backstage
