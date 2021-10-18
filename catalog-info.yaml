@@ -6,5 +6,5 @@ metadata:
     github.com/project-slug: VincentKlop/BeerzzzBrewingSoftware
 spec:
   type: other
-  lifecycle: unknown
+  lifecycle: development
   owner: backstage
